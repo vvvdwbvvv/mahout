@@ -142,12 +142,14 @@ pub mod angle;
 pub mod basis;
 pub mod iqp;
 pub mod phase;
+pub mod zzfeaturemap;
 
 pub use amplitude::AmplitudeEncoder;
 pub use angle::AngleEncoder;
 pub use basis::BasisEncoder;
 pub use iqp::IqpEncoder;
 pub use phase::PhaseEncoder;
+pub use zzfeaturemap::ZzFeatureMapEncoder;
 
 /// Create encoder by name: "amplitude", "angle", "basis", "iqp", or "iqp-z"
 pub fn get_encoder(name: &str) -> Result<Box<dyn QuantumEncoder>> {
@@ -158,8 +160,9 @@ pub fn get_encoder(name: &str) -> Result<Box<dyn QuantumEncoder>> {
         "iqp" => Ok(Box::new(IqpEncoder::full())),
         "iqp-z" => Ok(Box::new(IqpEncoder::z_only())),
         "phase" => Ok(Box::new(PhaseEncoder)),
+        "zzfeaturemap" => Ok(Box::new(ZzFeatureMapEncoder::default())),
         _ => Err(crate::error::MahoutError::InvalidInput(format!(
-            "Unknown encoder: {}. Available: amplitude, angle, basis, iqp, iqp-z, phase",
+            "Unknown encoder: {}. Available: amplitude, angle, basis, iqp, iqp-z, phase, zzfeaturemap",
             name
         ))),
     }

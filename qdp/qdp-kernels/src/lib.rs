@@ -297,6 +297,40 @@ unsafe extern "C" {
         num_qubits: u32,
         stream: *mut c_void,
     ) -> i32;
+
+    /// Launch ZZFeatureMap encoding kernel
+    ///
+    /// # Safety
+    /// Requires valid GPU pointers, must sync before freeing
+    pub fn launch_zzfeaturemap_encode(
+        features_d: *const f64,
+        state_d: *mut c_void,
+        state_len: usize,
+        num_qubits: u32,
+        reps: u32,
+        entanglement_mode: u32,
+        alpha: f64,
+        map_func: u32,
+        stream: *mut c_void,
+    ) -> i32;
+
+    /// Launch batch ZZFeatureMap encoding kernel
+    ///
+    /// # Safety
+    /// Requires valid GPU pointers, must sync before freeing
+    pub fn launch_zzfeaturemap_encode_batch(
+        features_batch_d: *const f64,
+        state_batch_d: *mut c_void,
+        num_samples: usize,
+        state_len: usize,
+        num_qubits: u32,
+        feature_len: u32,
+        reps: u32,
+        entanglement_mode: u32,
+        alpha: f64,
+        map_func: u32,
+        stream: *mut c_void,
+    ) -> i32;
 }
 
 // Dummy implementation for non-Linux and Linux builds without CUDA (allows linking)
@@ -519,6 +553,40 @@ pub extern "C" fn launch_phase_encode_batch(
     _num_samples: usize,
     _state_len: usize,
     _num_qubits: u32,
+    _stream: *mut c_void,
+) -> i32 {
+    999
+}
+
+#[cfg(any(not(target_os = "linux"), qdp_no_cuda))]
+#[unsafe(no_mangle)]
+pub extern "C" fn launch_zzfeaturemap_encode(
+    _features_d: *const f64,
+    _state_d: *mut c_void,
+    _state_len: usize,
+    _num_qubits: u32,
+    _reps: u32,
+    _entanglement_mode: u32,
+    _alpha: f64,
+    _map_func: u32,
+    _stream: *mut c_void,
+) -> i32 {
+    999
+}
+
+#[cfg(any(not(target_os = "linux"), qdp_no_cuda))]
+#[unsafe(no_mangle)]
+pub extern "C" fn launch_zzfeaturemap_encode_batch(
+    _features_batch_d: *const f64,
+    _state_batch_d: *mut c_void,
+    _num_samples: usize,
+    _state_len: usize,
+    _num_qubits: u32,
+    _feature_len: u32,
+    _reps: u32,
+    _entanglement_mode: u32,
+    _alpha: f64,
+    _map_func: u32,
     _stream: *mut c_void,
 ) -> i32 {
     999

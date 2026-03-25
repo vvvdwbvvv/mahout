@@ -36,6 +36,7 @@ fn main() {
     println!("cargo:rerun-if-changed=src/angle.cu");
     println!("cargo:rerun-if-changed=src/iqp.cu");
     println!("cargo:rerun-if-changed=src/phase.cu");
+    println!("cargo:rerun-if-changed=src/zzfeaturemap.cu");
     println!("cargo:rerun-if-env-changed=QDP_NO_CUDA");
     println!("cargo:rerun-if-changed=src/kernel_config.h");
 
@@ -102,5 +103,6 @@ fn main() {
         .file("src/angle.cu")
         .file("src/iqp.cu")
         .file("src/phase.cu")
+        .file("src/zzfeaturemap.cu")
         .compile("kernels");
 }

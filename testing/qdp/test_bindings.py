@@ -59,6 +59,22 @@ def test_encode():
 
 @requires_qdp
 @pytest.mark.gpu
+def test_encode_zzfeaturemap():
+    """Test zzfeaturemap encoding returns a usable DLPack tensor."""
+    from _qdp import QdpEngine, QuantumTensor
+
+    engine = QdpEngine(0)
+    data = [0.1, 0.2]
+    qtensor = engine.encode(data, 2, "zzfeaturemap")
+
+    assert isinstance(qtensor, QuantumTensor)
+    torch_tensor = torch.from_dlpack(qtensor)
+    assert torch_tensor.is_cuda
+    assert torch_tensor.shape == (1, 4)
+
+
+@requires_qdp
+@pytest.mark.gpu
 def test_dlpack_device():
     """Test __dlpack_device__ method (requires GPU)."""
     from _qdp import QdpEngine
